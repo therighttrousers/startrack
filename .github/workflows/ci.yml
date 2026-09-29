@@ -17,8 +17,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        preset: [msvc-debug, gcc-debug, clang-debug]
         include:
           - os: windows-latest
             preset: msvc-debug

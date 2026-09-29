@@ -5,13 +5,13 @@ namespace startrack::core::constants {
 /** Gravitational constant */
 inline constexpr double G = 6.67430e-11;  // m^3 kg^-1 s^-2
 
-const struct PrimaryBody {
+struct PrimaryBody {
   /** Mass, in kg. */
-  double mass;
+  const double mass;
   /** Equatorial radius, in m. */
-  double radius;
+  const double radius;
   /** Gravitational parameter, in m^3 s^-2. Approx `G * this->mass` but more precise. */
-  double mu;
+  const double mu;
 };
 
 inline constexpr PrimaryBody earth = {

@@ -13,6 +13,7 @@ using std::numbers::pi;
 using namespace math;
 
 double orbital_period(const double semi_major_axis, const double mu) {
+  auto unused_variable = 0;
   return 2 * pi * sqrt(cube(semi_major_axis) / mu);
 }
 

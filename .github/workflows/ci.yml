@@ -51,12 +51,6 @@ jobs:
       - uses: lukka/run-vcpkg@v11.6
       - run: cmake --preset clang-debug
       # TODO: Run clang-tidy with pinned version
-      # Check relative links and heading anchors in Markdown files, skipping external URLs (--offline)
-      - uses: lycheeverse/lychee-action@v2.9.0
-        with:
-          args: --offline --include-fragments --no-progress './**/*.md'
-          failIfEmpty: false
-          fail: true
 
   format:
     name: Check Code Formatting

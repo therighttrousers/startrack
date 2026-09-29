@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        preset: [msvc-debug, gcc-debug, clang-debug]
+    runs-on: ${{ matrix.os }}
+    env:
+      CMAKE_COMPILE_WARNING_AS_ERROR: "ON"
+    steps:
+      - uses: actions/checkout@v7
+      # Prerequisites
+      - uses: lukka/get-cmake@v4.4.2
+      - uses: lukka/run-vcpkg@v11.6
+      # Set up developer command prompt on Windows
+      - uses: ilammy/msvc-dev-cmd@v1.13.0
+        if: runner.os == 'Windows'
+        with:
+          arch: x64
+      # Configure, build, test
+      - run: cmake --workflow --preset ${{ matrix.preset }}
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: lukka/get-cmake@v4.4.2
+      - uses: lukka/run-vcpkg@v11.6
+      - run: cmake --preset ci-clang-debug
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Check relative links and heading anchors in Markdown files, skipping external URLs (--offline)
+      - uses: lycheeverse/lychee-action@v2.9.0
+        with:
+          args: --offline --include-fragments --no-progress './**/*.md'
+          fail: true
+      # TODO: Run "clang-format --dry-run --Werror" with pinned version
+
+  # Branch ruleset check
+  ci-ok:
+    if: always()
+    needs: [build-test-matrix, lint, format]
+    runs-on: ubuntu-latest
+    steps:
+      - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1

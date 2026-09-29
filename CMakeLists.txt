@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.25)
 
 project(StarTrack CXX)
 
@@ -10,7 +10,7 @@ endif ()
 add_library(compiler_settings INTERFACE)
 target_compile_features(compiler_settings INTERFACE cxx_std_20)
 target_compile_options(compiler_settings INTERFACE
-        $<$<CXX_COMPILER_ID:Clang,GNU>:-Wall -Wextra>
+        $<$<CXX_COMPILER_ID:Clang,GNU>:-Wall -Wextra -Wpedantic>
         $<$<CXX_COMPILER_ID:MSVC>:/W4 /permissive->
 )
 

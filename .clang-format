@@ -1,0 +1,4 @@
+BasedOnStyle: Google
+ColumnLimit: 120
+InsertNewlineAtEOF: true
+AllowShortFunctionsOnASingleLine: Empty  # Only empty functions because our lines are long

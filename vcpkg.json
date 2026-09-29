@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "startrack",
+  "version": "0.0.1",
+  "description": "Satellite constellation simulation and control",
+  "homepage": "https://github.com/therighttrousers/startrack",
+  "license": "MIT",
+  "dependencies": [
+    "catch2"
+  ],
+  "builtin-baseline": "07f4812200df3d3c931c0c8a6081d3b21fe2bf9f"
+}

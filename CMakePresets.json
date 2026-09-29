@@ -1,0 +1,54 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "vcpkg",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+            }
+        },
+        {
+            "name": "arch",
+            "hidden": true,
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "toolset": {
+                "value": "host=x64",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "msvc-debug",
+            "inherits": [
+                "vcpkg",
+                "arch"
+            ],
+            "displayName": "Ninja debug",
+            "description": "Debug configuration using the Ninja generator",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "cl",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "msvc-debug",
+            "configurePreset": "msvc-debug"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "msvc-debug",
+            "configurePreset": "msvc-debug"
+        }
+    ]
+}

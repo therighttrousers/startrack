@@ -1,7 +1,6 @@
 name: CI
 
 on:
-  push:
   pull_request:
   workflow_dispatch:
 
@@ -14,6 +13,7 @@ permissions:
 
 jobs:
   build-test:
+    name: Build+Test
     strategy:
       fail-fast: false
       matrix:
@@ -39,8 +39,11 @@ jobs:
           arch: x64
       # Configure, build, test
       - run: cmake --workflow --preset ${{ matrix.preset }}
+      # Ensure the working directory is clean
+      - run: git diff --quiet && git diff --cached --quiet
 
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -48,17 +51,18 @@ jobs:
       - uses: lukka/run-vcpkg@v11.6
       - run: cmake --preset clang-debug
       # TODO: Run clang-tidy with pinned version
-
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
       # Check relative links and heading anchors in Markdown files, skipping external URLs (--offline)
       - uses: lycheeverse/lychee-action@v2.9.0
         with:
           args: --offline --include-fragments --no-progress './**/*.md'
           failIfEmpty: false
           fail: true
+
+  format:
+    name: Check Code Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
       # TODO: Run "clang-format --dry-run --Werror" with pinned version
 
   # Branch ruleset check

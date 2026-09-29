@@ -19,11 +19,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         preset: [msvc-debug, gcc-debug, clang-debug]
-        exclude:
-          - os: ubuntu-latest
-            preset: msvc-debug
+        include:
           - os: windows-latest
+            preset: msvc-debug
+          - os: ubuntu-latest
             preset: gcc-debug
+          - os: ubuntu-latest
+            preset: clang-debug
     runs-on: ${{ matrix.os }}
     env:
       CMAKE_COMPILE_WARNING_AS_ERROR: "ON"

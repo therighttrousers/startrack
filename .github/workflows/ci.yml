@@ -87,7 +87,7 @@ jobs:
       - name: Run clang-tidy
         run: |
           shopt -s globstar extglob
-          clang-tidy --warnings-as-errors='*' -p ./build/clang-debug/ --config-file=./.clang-tidy --explain-config !(vcpkg|build)**/@(*.cpp|*.hpp)
+          clang-tidy --warnings-as-errors='*' -p ./build/clang-debug/ !(vcpkg|build)/**/*.@(h|c|hpp|cpp)
 
   format:
     name: Check Formatting
@@ -102,7 +102,7 @@ jobs:
       - name: Run clang-format
         run: |
           shopt -s globstar extglob
-          clang-format --dry-run --Werror --verbose !(vcpkg|build)**/@(*.cpp|*.hpp)
+          clang-format --dry-run --Werror !(vcpkg|build)/**/*.@(h|c|hpp|cpp)
 
   # Branch ruleset check
   ci-ok:

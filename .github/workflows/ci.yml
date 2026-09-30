@@ -87,7 +87,7 @@ jobs:
       - name: Run clang-tidy
         run: |
           shopt -s globstar extglob
-          clang-tidy --warnings-as-errors='*' -p build/clang-debug/ !({vcpkg,build})**/*.{cpp,hpp}
+          clang-tidy --warnings-as-errors='*' -p build/clang-debug/ !(vcpkg|build)**/@(*.cpp|*.hpp)
 
   format:
     name: Check Formatting
@@ -97,12 +97,12 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install clang-format
-        run: sudo apt update && sudo apt install clang-format
+        run: sudo apt update && sudo apt install -y clang-format
 
       - name: Run clang-format
         run: |
           shopt -s globstar extglob
-          clang-format --dry-run --Werror !({vcpkg,build})**/*.{cpp,hpp}
+          clang-format --dry-run --Werror !(vcpkg|build)**/@(*.cpp|*.hpp)
 
   # Branch ruleset check
   ci-ok:

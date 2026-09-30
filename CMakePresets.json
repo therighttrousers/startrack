@@ -69,22 +69,6 @@
                 { "type": "build", "name": "msvc-debug" },
                 { "type": "test", "name": "msvc-debug" }
             ]
-        },
-        {
-            "name": "gcc-debug",
-            "steps": [
-                { "type": "configure", "name": "gcc-debug" },
-                { "type": "build", "name": "gcc-debug" },
-                { "type": "test", "name": "gcc-debug" }
-            ]
-        },
-        {
-            "name": "clang-debug",
-            "steps": [
-                { "type": "configure", "name": "clang-debug" },
-                { "type": "build", "name": "clang-debug" },
-                { "type": "test", "name": "clang-debug" }
-            ]
         }
     ]
 }

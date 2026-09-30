@@ -34,13 +34,14 @@ jobs:
       # Prerequisites
       - uses: lukka/get-cmake@v4.4.2
       - uses: lukka/run-vcpkg@v11.6
-      # Set up developer command prompt on Windows
+      # Set up x64 developer command prompt on Windows
       - uses: ilammy/msvc-dev-cmd@v1.13.0
         if: runner.os == 'Windows'
         with:
           arch: x64
-      # Configure, build, test
-      - run: cmake --workflow --preset ${{ matrix.preset }}
+      - run: cmake --preset ${{ matrix.preset }}
+      - run: cmake --build --preset ${{ matrix.preset }}
+      - run: ctest --preset ${{ matrix.preset }}
       - run: |
           if [ -n "$(git status --porcelain)" ]; then
             echo "::error::Uncommitted changes or untracked files detected!"

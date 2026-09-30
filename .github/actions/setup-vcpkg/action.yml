@@ -24,7 +24,7 @@ runs:
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install -y mono-runtime mono-devel
+        sudo apt-get install -y mono-devel
 
     - name: Set up NuGet Credentials
       shell: 'bash'

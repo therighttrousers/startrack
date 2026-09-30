@@ -1,0 +1,32 @@
+name: setup-vcpkg
+
+description: Bootstraps vcpkg and sets up binary caching with NuGet
+
+runs: 
+  using: composite
+  steps:
+    - name: Bootstrap vcpkg
+      env:
+        EXT: ${{ case(runner.os == 'Windows', '.bat', '.sh') }}
+      shell: bash
+      run: ./vcpkg/bootstrap-vcpkg$EXT
+
+    - name: Install Mono (Linux)
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends -y mono-devel
+
+    - name: Set up NuGet cache
+      shell: 'bash'
+      env:
+        MONO: ${{ case(runner.os == 'Windows', '', 'mono') }}
+        SOURCE: "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+        OWNER: ${{ github.repository_owner }}
+        TOKEN: ${{ github.token }}
+      run: |
+        NUGET=$(./vcpkg/vcpkg fetch nuget | tail -n 1)
+        $MONO $NUGET sources add -source "$SOURCE" -storepasswordincleartext -name "GitHub" -username "$OWNER" -password "$TOKEN"
+        $MONO $NUGET setapikey "$TOKEN" -source "$SOURCE"
+        echo "VCPKG_BINARY_SOURCES=clear;nuget,GitHub,readwrite" >> "$GITHUB_ENV"

@@ -1,4 +1,16 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.useCMakePresets": "always",
+
+    "files.exclude": {
+        "vcpkg": true,
+    },
+
     "editor.formatOnSave": true,
+    "rewrap.wrappingColumn": 120,
+
+    "json.format.keepLines": true,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
 }

@@ -18,7 +18,7 @@ runs:
     - name: Set up NuGet Credentials
       shell: 'bash'
       env:
-        MONO: ${{ runner.os == 'Windows' && '' || 'mono' }}
+        MONO: ${{ case(runner.os == 'Windows', '', '') }}
       run: |
         $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
           sources add \

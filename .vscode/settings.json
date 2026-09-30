@@ -2,6 +2,10 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "cmake.useCMakePresets": "always",
 
+    "files.exclude": {
+        "vcpkg": true,
+    },
+
     "editor.formatOnSave": true,
     "rewrap.wrappingColumn": 120,
 

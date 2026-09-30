@@ -28,48 +28,66 @@ jobs:
             preset: clang-debug
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout with submodules
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: true
-      # Set up x64 developer command prompt on Windows
-      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+
+      - name: Set up Windows x64 dev environment
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
         if: runner.os == 'Windows'
         with:
           arch: x64
-      - uses: lukka/get-cmake@fffaaafeea488556c2c12dad60690008bc1caacb # v4.4.2
-      - run: cmake --workflow --preset ${{ matrix.preset }}
-      - run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "::error::Uncommitted changes or untracked files detected!"
-            git status
-            exit 1
-          fi
+
+      - name: Install CMake
+        uses: lukka/get-cmake@fffaaafeea488556c2c12dad60690008bc1caacb # v4.4.2
+
+      - name: Configure, build, test
+        run: cmake --workflow --preset ${{ matrix.preset }}
+
+      - name: Ensure no repo changes
+        run: |
+          git add -A
+          git diff --cached --exit-code
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout with submodules
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: true
-      - run: |
-          # Ensure "builtin-baseline" in vcpkg.json is the same as the vcpkg submodule commit hash
+
+      - name: Check builtin-baseline == vcpkg commit hash
+        run: |
           BUILTIN_BASELINE=`node -p "require('./vcpkg.json')['builtin-baseline']"`
           COMMIT_HASH=`git -C vcpkg rev-parse HEAD`
           if [[ "$BUILTIN_BASELINE" != "$COMMIT_HASH" ]]; then
             echo "::error::builtin-baseline in vcpkg.json does not match vcpkg submodule commit hash ($BUILTIN_BASELINE != $COMMIT_HASH)!"
             exit 1
           fi
-      - uses: lukka/get-cmake@fffaaafeea488556c2c12dad60690008bc1caacb # v4.4.2
-      - run: cmake --preset clang-debug
-      # TODO: Run clang-tidy with pinned version
+
+      - name: Install CMake
+        uses: lukka/get-cmake@fffaaafeea488556c2c12dad60690008bc1caacb # v4.4.2
+
+      - name: Configure
+        run: cmake --preset clang-debug
+      
+      - name: Run clang-tidy
+        run: |
+          echo "TODO: clang-tidy <args> (pinned version)"
 
   format:
     name: Check Formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      # TODO: Run "clang-format --dry-run --Werror" with pinned version
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Run clang-format
+        run: |
+          echo "TODO: clang-format --dry-run --Werror (pinned version)"
 
   # Branch ruleset check
   ci-ok:

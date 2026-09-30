@@ -1,6 +1,8 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+
     "editor.formatOnSave": true,
+    "rewrap.wrappingColumn": 120,
 
     "json.format.keepLines": true,
     "[json]": {

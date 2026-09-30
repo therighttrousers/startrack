@@ -19,12 +19,12 @@ runs:
       if: runner.os != 'Windows'
       uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
 
-    - name: Install Mono runtime
+    - name: Install Mono
       if: runner.os != 'Windows'
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install -y mono-runtime
+        sudo apt-get install -y mono-runtime mono-devel
 
     - name: Set up NuGet Credentials
       shell: 'bash'

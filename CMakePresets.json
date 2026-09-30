@@ -14,26 +14,13 @@
         {
             "name": "windows-x64",
             "hidden": true,
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            },
-            "architecture": {
-                "value": "x64",
-                "strategy": "external"
-            },
-            "toolset": {
-                "value": "host=x64",
-                "strategy": "external"
-            }
+            "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+            "architecture": { "value": "x64", "strategy": "external" },
+            "toolset": { "value": "host=x64", "strategy": "external" }
         },
         {
             "name": "msvc-debug",
-            "inherits": [
-                "base",
-                "windows-x64"
-            ],
+            "inherits": [ "base", "windows-x64" ],
             "cacheVariables": {
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_BUILD_TYPE": "Debug"
@@ -41,9 +28,7 @@
         },
         {
             "name": "gcc-debug",
-            "inherits": [
-                "base"
-            ],
+            "inherits": [ "base" ],
             "cacheVariables": {
                 "CMAKE_CXX_COMPILER": "g++",
                 "CMAKE_BUILD_TYPE": "Debug"
@@ -51,28 +36,29 @@
         },
         {
             "name": "clang-debug",
-            "inherits": [
-                "base"
-            ],
+            "inherits": [ "base" ],
             "cacheVariables": {
                 "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_BUILD_TYPE": "Debug"
             }
-        }
+        },
+        {
+            "name": "ci-base",
+            "cacheVariables": {
+                "CMAKE_COMPILE_WARNING_AS_ERROR": "ON"
+            }
+        },
+        { "name": "ci-msvc-debug", "inherits": [ "msvc-debug", "ci-base" ] },
+        { "name": "ci-gcc-debug", "inherits": [ "gcc-debug", "ci-base" ] },
+        { "name": "ci-clang-debug", "inherits": [ "clang-debug", "ci-base" ] }
     ],
     "buildPresets": [
-        {
-            "name": "msvc-debug",
-            "configurePreset": "msvc-debug"
-        },
-        {
-            "name": "gcc-debug",
-            "configurePreset": "gcc-debug"
-        },
-        {
-            "name": "clang-debug",
-            "configurePreset": "clang-debug"
-        }
+        { "name": "msvc-debug", "configurePreset": "msvc-debug" },
+        { "name": "gcc-debug", "configurePreset": "gcc-debug" },
+        { "name": "clang-debug", "configurePreset": "clang-debug" },
+        { "name": "ci-msvc-debug", "configurePreset": "ci-msvc-debug" },
+        { "name": "ci-gcc-debug", "configurePreset": "ci-gcc-debug" },
+        { "name": "ci-clang-debug", "configurePreset": "ci-clang-debug" }
     ],
     "testPresets": [
         {
@@ -82,78 +68,60 @@
                 "outputOnFailure": true
             }
         },
-        {
-            "name": "msvc-debug",
-            "configurePreset": "msvc-debug",
-            "inherits": [
-                "test-base"
-            ]
-        },
-        {
-            "name": "gcc-debug",
-            "configurePreset": "gcc-debug",
-            "inherits": [
-                "test-base"
-            ]
-        },
-        {
-            "name": "clang-debug",
-            "configurePreset": "clang-debug",
-            "inherits": [
-                "test-base"
-            ]
-        }
+        { "name": "msvc-debug", "configurePreset": "msvc-debug", "inherits": [ "test-base" ] },
+        { "name": "gcc-debug", "configurePreset": "gcc-debug", "inherits": [ "test-base" ] },
+        { "name": "clang-debug", "configurePreset": "clang-debug", "inherits": [ "test-base" ] },
+        { "name": "ci-msvc-debug", "configurePreset": "ci-msvc-debug", "inherits": [ "test-base" ] },
+        { "name": "ci-gcc-debug", "configurePreset": "ci-gcc-debug", "inherits": [ "test-base" ] },
+        { "name": "ci-clang-debug", "configurePreset": "ci-clang-debug", "inherits": [ "test-base" ] }
     ],
     "workflowPresets": [
         {
             "name": "msvc-debug",
             "steps": [
-                {
-                    "type": "configure",
-                    "name": "msvc-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "msvc-debug"
-                },
-                {
-                    "type": "test",
-                    "name": "msvc-debug"
-                }
+                { "type": "configure", "name": "msvc-debug" },
+                { "type": "build", "name": "msvc-debug" },
+                { "type": "test", "name": "msvc-debug" }
             ]
         },
         {
             "name": "gcc-debug",
             "steps": [
-                {
-                    "type": "configure",
-                    "name": "gcc-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "gcc-debug"
-                },
-                {
-                    "type": "test",
-                    "name": "gcc-debug"
-                }
+                { "type": "configure", "name": "gcc-debug" },
+                { "type": "build", "name": "gcc-debug" },
+                { "type": "test", "name": "gcc-debug" }
             ]
         },
         {
             "name": "clang-debug",
             "steps": [
-                {
-                    "type": "configure",
-                    "name": "clang-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "clang-debug"
-                },
-                {
-                    "type": "test",
-                    "name": "clang-debug"
-                }
+                { "type": "configure", "name": "clang-debug" },
+                { "type": "build", "name": "clang-debug" },
+                { "type": "test", "name": "clang-debug" }
+            ]
+        },
+        {
+            "name": "ci-msvc-debug",
+            "steps": [
+                { "type": "configure", "name": "ci-msvc-debug" },
+                { "type": "build", "name": "ci-msvc-debug" },
+                { "type": "test", "name": "ci-msvc-debug" }
+            ]
+        },
+        {
+            "name": "ci-gcc-debug",
+            "steps": [
+                { "type": "configure", "name": "ci-gcc-debug" },
+                { "type": "build", "name": "ci-gcc-debug" },
+                { "type": "test", "name": "ci-gcc-debug" }
+            ]
+        },
+        {
+            "name": "ci-clang-debug",
+            "steps": [
+                { "type": "configure", "name": "ci-clang-debug" },
+                { "type": "build", "name": "ci-clang-debug" },
+                { "type": "test", "name": "ci-clang-debug" }
             ]
         }
     ]

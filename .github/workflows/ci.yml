@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -19,11 +21,11 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            preset: msvc-debug
+            preset: ci-msvc-debug
           - os: ubuntu-latest
-            preset: gcc-debug
+            preset: ci-gcc-debug
           - os: ubuntu-latest
-            preset: clang-debug
+            preset: ci-clang-debug
     runs-on: ${{ matrix.os }}
     env:
       CMAKE_COMPILE_WARNING_AS_ERROR: "ON"
@@ -39,8 +41,12 @@ jobs:
           arch: x64
       # Configure, build, test
       - run: cmake --workflow --preset ${{ matrix.preset }}
-      # Ensure the working directory is clean
-      - run: git diff --quiet && git diff --cached --quiet
+      - run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Uncommitted changes or untracked files detected!"
+            git status
+            exit 1
+          fi
 
   lint:
     name: Lint
@@ -53,7 +59,7 @@ jobs:
       # TODO: Run clang-tidy with pinned version
 
   format:
-    name: Check Code Formatting
+    name: Check Formatting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

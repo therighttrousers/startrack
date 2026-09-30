@@ -5,25 +5,18 @@ description: Bootstraps vcpkg and sets up binary caching with NuGet
 runs: 
   using: composite
   steps:
-    - name: Bootstrap vcpkg (Windows)
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: ./vcpkg/bootstrap-vcpkg.bat
-
-    - name: Bootstrap vcpkg (non-Windows)
-      if: runner.os != 'Windows'
+    - name: Bootstrap vcpkg
+      env:
+        EXT: ${{ case(runner.os == 'Windows', '.bat', '.sh') }}
       shell: bash
-      run: ./vcpkg/bootstrap-vcpkg.sh
-    
-    - name: Install NuGet
-      if: runner.os != 'Windows'
-      uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
+      run: ./vcpkg/bootstrap-vcpkg$EXT
 
-    - name: Install Mono
-      if: runner.os != 'Windows'
+    - name: Install Mono and NuGet (Linux)
+      if: runner.os == 'Linux'
       shell: bash
       run: |
         sudo apt-get update
+        sudo apt-get install -y nuget
         sudo apt-get install -y mono-devel
 
     - name: Set up NuGet Credentials

@@ -1,5 +1,6 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.useCMakePresets": "always",
 
     "editor.formatOnSave": true,
     "rewrap.wrappingColumn": 120,

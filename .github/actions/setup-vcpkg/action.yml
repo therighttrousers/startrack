@@ -11,13 +11,16 @@ runs:
       shell: bash
       run: ./vcpkg/bootstrap-vcpkg$EXT
 
-    - name: Install Mono and NuGet (Linux)
+    - name: Install Mono (Linux)
       if: runner.os == 'Linux'
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install -y nuget
         sudo apt-get install -y mono-devel
+
+    - name: Install NuGet (Linux)
+      if: runner.os == 'Linux'
+      uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
 
     - name: Set up NuGet Credentials
       shell: 'bash'

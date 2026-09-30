@@ -85,8 +85,7 @@ jobs:
         run: cmake --preset clang-debug
       
       - name: Run clang-tidy
-        run: |
-          echo "TODO: clang-tidy <args> (pinned version)"
+        run: clang-tidy --warnings-as-errors='*' -p build/clang-debug/ **/*.{c,cpp,h,hpp}
 
   format:
     name: Check Formatting
@@ -96,8 +95,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Run clang-format
-        run: |
-          echo "TODO: clang-format --dry-run --Werror (pinned version)"
+        run: clang-format --dry-run --Werror **/*.{c,cpp,h,hpp}
 
   # Branch ruleset check
   ci-ok:

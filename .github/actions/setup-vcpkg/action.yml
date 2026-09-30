@@ -2,7 +2,7 @@ name: setup-vcpkg
 
 description: Bootstraps vcpkg and sets up binary caching with NuGet
 
-runs: 
+runs:
   using: composite
   steps:
     - name: Bootstrap vcpkg

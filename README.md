@@ -8,8 +8,8 @@ Satellite constellation simulation, rendering and control
 
 Prerequisites:
 - Git
-- On Windows: Visual Studio 2026 Build Tools (18.10) `cl`, `cmake`, `ninja`
-- On Linux: `g++` or `clang++`, `cmake`, `ninja`
+- On Windows: Visual Studio 2026 Build Tools (18.10) `cl`, `cmake`, `ninja`, `clang-format`, `clang-tidy`
+- On Linux: `g++` or `clang++`, `cmake`, `ninja`, `clang-format`, `clang-tidy`
 
 On Windows, launch the x64 Native Tools Command Prompt, to clone/build and to launch VS Code (with `code`).
 

@@ -87,7 +87,7 @@ jobs:
       - name: Run clang-tidy
         run: |
           shopt -s globstar extglob
-          clang-tidy --warnings-as-errors='*' -p build/clang-debug/ !(vcpkg|build)**/@(*.cpp|*.hpp)
+          clang-tidy --warnings-as-errors='*' -p ./build/clang-debug/ --config-file=./.clang-tidy !(vcpkg|build)**/@(*.cpp|*.hpp)
 
   format:
     name: Check Formatting

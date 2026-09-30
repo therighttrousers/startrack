@@ -18,9 +18,9 @@ runs:
         sudo apt-get update
         sudo apt-get install --no-install-recommends -y mono-devel
 
-    - name: Install NuGet (Linux)
-      if: runner.os == 'Linux'
-      uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
+    # - name: Install NuGet (Linux)
+    #   if: runner.os == 'Linux'
+    #   uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
 
     - name: Set up NuGet Credentials
       shell: 'bash'
@@ -29,11 +29,11 @@ runs:
       run: |
         $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
           sources add \
-          -source "https://nuget.pkg.github.com/therighttrousers/index.json" \
+          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
           -storepasswordincleartext \
           -name "GitHub" \
-          -username "therighttrousers" \
+          -username "${{ github.repository_owner }}" \
           -password "${{ github.token }}"
         $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
           setapikey "${{ github.token }}" \
-          -source "https://nuget.pkg.github.com/therighttrousers/index.json"
+          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"

@@ -16,24 +16,18 @@ runs:
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install --no-install-recommends -y mono-devel
+        # sudo apt-get install --no-install-recommends -y mono-devel
+        sudo apt-get install --no-install-recommends -y mono-runtime
 
-    # - name: Install NuGet (Linux)
-    #   if: runner.os == 'Linux'
-    #   uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
-
-    - name: Set up NuGet Credentials
+    - name: Set up NuGet cache
       shell: 'bash'
       env:
         MONO: ${{ case(runner.os == 'Windows', '', 'mono') }}
+        SOURCE: "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+        OWNER: ${{ github.repository_owner }}
+        TOKEN: ${{ github.token }}
       run: |
-        $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
-          sources add \
-          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-          -storepasswordincleartext \
-          -name "GitHub" \
-          -username "${{ github.repository_owner }}" \
-          -password "${{ github.token }}"
-        $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
-          setapikey "${{ github.token }}" \
-          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+        NUGET=$(./vcpkg/vcpkg fetch nuget | tail -n 1)
+        $MONO $NUGET sources add -source "$SOURCE" -storepasswordincleartext -name "GitHub" -username "$OWNER" -password "$TOKEN"
+        $MONO $NUGET setapikey "$TOKEN" -source "$SOURCE"
+        echo "VCPKG_BINARY_SOURCES=clear;nuget,GitHub,readwrite" >> "$GITHUB_ENV"

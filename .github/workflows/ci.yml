@@ -27,6 +27,8 @@ jobs:
           - os: ubuntu-latest
             preset: clang-debug
     runs-on: ${{ matrix.os }}
+    env:
+      VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -42,6 +44,9 @@ jobs:
       - name: Install CMake
         uses: lukka/get-cmake@fffaaafeea488556c2c12dad60690008bc1caacb # v4.4.2
 
+      - name: Set up vcpkg
+        uses: ./.github/actions/setup-vcpkg
+
       - name: Configure, build, test
         run: cmake --workflow --preset ${{ matrix.preset }}
 
@@ -53,6 +58,8 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    env:
+      VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -70,6 +77,9 @@ jobs:
 
       - name: Install CMake
         uses: lukka/get-cmake@fffaaafeea488556c2c12dad60690008bc1caacb # v4.4.2
+
+      - name: Set up vcpkg
+        uses: ./.github/actions/setup-vcpkg
 
       - name: Configure
         run: cmake --preset clang-debug

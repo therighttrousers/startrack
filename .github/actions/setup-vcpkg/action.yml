@@ -14,6 +14,10 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: ./vcpkg/bootstrap-vcpkg.sh
+    
+    - name: Install NuGet
+      if: runner.os == 'Linux'
+      uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
 
     - name: Set up NuGet Credentials
       shell: 'bash'

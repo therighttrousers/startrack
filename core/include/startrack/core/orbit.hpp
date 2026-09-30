@@ -9,6 +9,6 @@ namespace startrack::core {
  * @param mu The standard gravitational parameter of the primary body, in m^3/s^2.
  * @return The orbital period, in seconds.
  */
-double   orbital_period(double semi_major_axis, double mu);
+double orbital_period(double semi_major_axis, double mu);
 
 }  // namespace startrack::core

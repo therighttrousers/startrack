@@ -2,30 +2,31 @@ name: setup-vcpkg
 
 description: Bootstraps vcpkg and sets up binary caching with NuGet
 
-inputs:
-  mono:
-    description: 'Name of the mono executable (blank on Windows)'
-    required: true
-    default: ''
-
 runs: 
   using: composite
   steps:
-    - name: Bootstrap vcpkg
+    - name: Bootstrap vcpkg (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: ./vcpkg/bootstrap-vcpkg.bat
+
+    - name: Bootstrap vcpkg (Linux)
+      if: runner.os == 'Linux'
       shell: bash
-      run: ./vcpkg/bootstrap-vcpkg
+      run: ./vcpkg/bootstrap-vcpkg.sh
 
     - name: Set up NuGet Credentials
       shell: 'bash'
-      # Replace <OWNER> with your organization name
+      env:
+        MONO: ${{ runner.os == 'Windows' && '' || 'mono' }}
       run: |
-        ${{ inputs.mono }} `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+        $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
           sources add \
           -source "https://nuget.pkg.github.com/therighttrousers/index.json" \
           -storepasswordincleartext \
           -name "GitHub" \
           -username "therighttrousers" \
           -password "${{ github.token }}"
-        ${{ inputs.mono }} `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+        $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
           setapikey "${{ github.token }}" \
           -source "https://nuget.pkg.github.com/therighttrousers/index.json"

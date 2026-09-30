@@ -85,7 +85,9 @@ jobs:
         run: cmake --preset clang-debug
       
       - name: Run clang-tidy
-        run: clang-tidy --warnings-as-errors='*' -p build/clang-debug/ **/*.{c,cpp,h,hpp}
+        run: |
+          shopt -s globstar
+          clang-tidy --warnings-as-errors='*' -p build/clang-debug/ **/*.{c,cpp,h,hpp}
 
   format:
     name: Check Formatting
@@ -94,8 +96,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: Install clang-format
+        run: sudo apt update && sudo apt install clang-format
+
       - name: Run clang-format
-        run: clang-format --dry-run --Werror **/*.{c,cpp,h,hpp}
+        run: |
+          shopt -s globstar
+          clang-format --dry-run --Werror **/*.{c,cpp,h,hpp}
 
   # Branch ruleset check
   ci-ok:

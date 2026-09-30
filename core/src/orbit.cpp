@@ -1,7 +1,8 @@
+#include "startrack/core/orbit.hpp"
+
 #include <cmath>
 #include <numbers>
 
-#include "startrack/core/orbit.hpp"
 #include "startrack/core/math.hpp"
 
 namespace startrack::core {

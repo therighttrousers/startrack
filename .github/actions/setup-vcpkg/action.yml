@@ -10,27 +10,34 @@ runs:
       shell: pwsh
       run: ./vcpkg/bootstrap-vcpkg.bat
 
-    - name: Bootstrap vcpkg (Linux)
-      if: runner.os == 'Linux'
+    - name: Bootstrap vcpkg (non-Windows)
+      if: runner.os != 'Windows'
       shell: bash
       run: ./vcpkg/bootstrap-vcpkg.sh
     
     - name: Install NuGet
-      if: runner.os == 'Linux'
+      if: runner.os != 'Windows'
       uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4.0
+
+    - name: Install Mono
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mono-complete
 
     - name: Set up NuGet Credentials
       shell: 'bash'
       env:
-        MONO: ${{ case(runner.os == 'Windows', '', '') }}
+        MONO: ${{ case(runner.os == 'Windows', '', 'mono') }}
       run: |
-        `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+        $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
           sources add \
           -source "https://nuget.pkg.github.com/therighttrousers/index.json" \
           -storepasswordincleartext \
           -name "GitHub" \
           -username "therighttrousers" \
           -password "${{ github.token }}"
-        `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+        $MONO `./vcpkg/vcpkg fetch nuget | tail -n 1` \
           setapikey "${{ github.token }}" \
           -source "https://nuget.pkg.github.com/therighttrousers/index.json"

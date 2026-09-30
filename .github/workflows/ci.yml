@@ -96,13 +96,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Install clang-format
-        run: sudo apt update && sudo apt install -y clang-format
-
       - name: Run clang-format
-        run: |
-          shopt -s globstar extglob
-          clang-format --dry-run --Werror !(vcpkg|build)/**/*.@(h|c|hpp|cpp)
+        uses: jidicula/clang-format-action@654a770daa28443dd111d133e4083e21c1075674 # v4.18.0
+        with:
+          clang-format-version: '22'
+          check-path: '.'
+          exclude-regex: '^(vcpkg|build)/'
 
   # Branch ruleset check
   ci-ok:

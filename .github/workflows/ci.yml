@@ -28,7 +28,7 @@ jobs:
             preset: clang-debug
     runs-on: ${{ matrix.os }}
     permissions:
-      packages: write  # for vcpkg binary package cache
+      packages: write  # for vcpkg-NuGet binary package cache
     env:
       VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
     steps:
@@ -61,7 +61,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     permissions:
-      packages: write  # for vcpkg binary package cache
+      packages: write  # for vcpkg-NuGet binary package cache
     env:
       VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
     steps:

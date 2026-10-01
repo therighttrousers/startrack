@@ -7,6 +7,7 @@ catch_discover_tests(startrack_tests)
 
 target_link_libraries(startrack_tests PRIVATE
         compiler_settings
+        qd
         startrack_core
         Catch2::Catch2WithMain
 )

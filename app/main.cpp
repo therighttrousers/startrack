@@ -1,3 +1,5 @@
+#include <qd_single.h>
+
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -9,6 +11,10 @@ using startrack::core::orbital_period;
 using startrack::core::constants::earth;
 
 auto main() -> int {
+  // Ensure that the FPU is correctly configured for QD
+  unsigned int old_cw = 0;
+  fpu_fix_start(&old_cw);
+
   std::cout << std::setprecision(std::numeric_limits<double>::max_digits10);
 
   const double semi_major_axis = 550e3 + earth.radius;  // 550 km altitude

@@ -1,7 +1,12 @@
 {
+    "cmake.useCMakePresets": "always",
+
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "C_Cpp.codeAnalysis.clangTidy.enabled": true,
-    "cmake.useCMakePresets": "always",
+    "C_Cpp.files.exclude": {
+        "build": true,
+        "vcpkg": true,
+    },
 
     "files.exclude": {
         "vcpkg": true,

@@ -13,12 +13,12 @@ concept Arithmetic = requires(T a, T b) {
 };
 
 template <Arithmetic T>
-constexpr T square(const T& x) {
+constexpr auto square(const T& x) -> T {
   return x * x;
 }
 
 template <Arithmetic T>
-constexpr T cube(const T& x) {
+constexpr auto cube(const T& x) -> T {
   return x * x * x;
 }
 

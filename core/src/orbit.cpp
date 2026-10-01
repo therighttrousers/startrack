@@ -12,7 +12,7 @@ using std::numbers::pi;
 
 using namespace math;
 
-double orbital_period(const double semi_major_axis, const double mu) {
+auto orbital_period(const double semi_major_axis, const double mu) -> double {
   return 2 * pi * sqrt(cube(semi_major_axis) / mu);
 }
 

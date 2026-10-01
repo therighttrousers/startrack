@@ -10,5 +10,6 @@ using startrack::core::orbital_period;
 using startrack::core::constants::earth;
 
 TEST_CASE("orbital_period") {
+  // NOLINTNEXTLINE(readability-magic-numbers)
   REQUIRE_THAT(orbital_period(550e3 + earth.radius, earth.mu), WithinRel(95.649880250 * 60, 1e-9));
 }

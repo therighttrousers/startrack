@@ -15,8 +15,24 @@
     "editor.formatOnSave": true,
     "rewrap.wrappingColumn": 120,
 
+    "files.associations": {
+        ".clang-format": "yaml",
+        ".clang-tidy": "yaml",
+    },
+
     "json.format.keepLines": true,
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+
+    "[yaml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.defaultColorDecorators": "never",
+        "editor.quickSuggestions": {
+            "strings": "on"
+        }
+    }
 }

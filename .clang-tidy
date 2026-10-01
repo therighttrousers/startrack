@@ -1,0 +1,21 @@
+# Removals:
+# - cppcoreguidelines-avoid-magic-numbers: alias of readability-magic-numbers, which is shorter
+# - cppcoreguidelines-avoid-const-or-ref-data-members: makes it harder to create immutable datatypes
+# - readability-identifier-length: makes numeric code harder to read (I want `y += a`, not `retval += accum`)
+# - portability-avoid-pragma-once: just waiting for standard to catch up (cmon guys)
+
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  concurrency-*,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-avoid-const-or-ref-data-members,
+  misc-const-correctness,
+  modernize-*,
+  performance-*,
+  portability-*,
+  -portability-avoid-pragma-once,
+  readability-*,
+  -readability-identifier-length
